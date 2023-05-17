@@ -195,9 +195,16 @@ NSString *const pushPluginApplicationDidBecomeActiveNotification = @"pushPluginA
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
     pushHandler.notificationMessage = notification.request.content.userInfo;
     pushHandler.isInline = YES;
-    [pushHandler notificationReceived];
+    // Fix for on('notification') callback called automatically when app is in foreground
+    // [pushHandler notificationReceived];
 
-    completionHandler(UNNotificationPresentationOptionNone);
+    // show push notifications when app is in foreground as banner and in notification center - custom implementation
+    if (@available(iOS 14.0, *)) {
+        completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionSound);
+	  } else {
+	      // Fallback on earlier versions
+		    completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound);
+	  }
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
@@ -214,7 +221,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         case UIApplicationStateActive:
         {
             PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
-            pushHandler.notificationMessage = userInfo;
+            // Handle tap when app is in foreground
+            pushHandler.notificationMessage = response.notification.request.content.userInfo;
             pushHandler.isInline = NO;
             [pushHandler notificationReceived];
             completionHandler();
@@ -249,7 +257,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 NSLog(@"Push Plugin notId handler");
                 [pushHandler.handlerObj setObject:safeHandler forKey:@"handler"];
             }
-
+            
             pushHandler.notificationMessage = userInfo;
             pushHandler.isInline = NO;
 
