@@ -122,9 +122,7 @@
     <framework src="PushKit.framework"/>
 
     <podspec>
-      <config>
-        <source url="https://cdn.cocoapods.org/"/>
-      </config>
+      <config></config>
       <pods use-frameworks="true">
         <pod name="Firebase/Messaging" spec="$IOS_FIREBASE_MESSAGING_VERSION" />
       </pods>
