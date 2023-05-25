@@ -122,9 +122,11 @@
     <framework src="PushKit.framework"/>
 
     <podspec>
-      <config></config>
+      <config>
+        <source url="https://cdn.cocoapods.org/"/>
+      </config>
       <pods use-frameworks="true">
-        <pod name="Firebase/Messaging" spec="$IOS_FIREBASE_MESSAGING_VERSION" />
+        <pod name="Firebase/Messaging" spec="~> 8.1.1" />
       </pods>
     </podspec>
   </platform>
