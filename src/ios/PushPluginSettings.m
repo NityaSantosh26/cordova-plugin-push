@@ -33,7 +33,7 @@
             @"alert" : @(NO),
             @"critical" : @(NO),
             @"clearBadge" : @(NO),
-            @"forceShow" : @(NO),
+            @"forceShow" : @(YES),
             @"forceRegister" : @(NO),
             @"voip" : @(NO),
             @"fcmTopics" : @[],
